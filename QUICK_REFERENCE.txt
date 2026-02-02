@@ -1,0 +1,139 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║              QGIS HYPERSPECTRAL TOOLS - QUICK REFERENCE CARD                 ║
+║                          For Grant Boxer                                     ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📍 INSTALLATION LOCATION
+
+Copy the 'hyperspectral_tools' folder to:
+
+  Windows: C:\Users\Grant\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\
+  Linux:   ~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/
+  Mac:     ~/Library/Application Support/QGIS/QGIS3/profiles/default/python/plugins/
+
+Then restart QGIS and enable in Plugins → Manage and Install Plugins
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔧 AVAILABLE TOOLS (3)
+
+1. SPECTRAL ANGLE MAPPER (SAM)
+   Location: Processing → Hyperspectral Tools → Classification → SAM
+   Use: Classify pixels using spectral libraries
+   Input: Hyperspectral image + spectral library (CSV)
+   Output: Rule images + classification map
+
+2. WAVELENGTH OF MINIMUM
+   Location: Processing → Hyperspectral Tools → Spectral Analysis → Wavelength of Minimum
+   Use: Find absorption feature positions
+   Input: Hyperspectral image
+   Parameters: Start/End wavelength (e.g., 2000-2500 nm)
+   Output: 19-band feature characteristics
+
+3. WAVELENGTH MAPPING
+   Location: Processing → Hyperspectral Tools → Spectral Analysis → Wavelength Mapping
+   Use: Visualize absorption features as RGB
+   Input: Output from Wavelength of Minimum
+   Output: Color-coded RGB map (hue=wavelength, brightness=depth)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 TYPICAL WORKFLOW: MINERAL MAPPING
+
+Step 1: WAVELENGTH OF MINIMUM
+  Input: my_image.tif
+  Start: 2000 nm
+  End: 2500 nm
+  Mode: Division
+  Output: features.tif
+  
+Step 2: WAVELENGTH MAPPING
+  Input: features.tif
+  Min Wav: 2100 nm
+  Max Wav: 2350 nm
+  Min Depth: 0.0
+  Max Depth: 0.2
+  Output: map_rgb.tif
+
+Result: Color map where:
+  Blue/Green = Kaolinite (~2160 nm)
+  Yellow = Smectite (~2200 nm)
+  Red = Illite (~2220 nm)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 COMMON WAVELENGTH RANGES
+
+MINERALS:
+  Clays (general): 2000-2500 nm
+  Kaolinite: 2160-2170 nm
+  Smectite: 2200-2210 nm
+  Illite: 2200-2220 nm
+  Carbonates: 2300-2400 nm
+  Iron Oxides: 400-1000 nm
+
+VEGETATION:
+  Chlorophyll: 650-750 nm
+  Red Edge: ~720 nm
+  Water Content: 970, 1200, 1450 nm
+  Cellulose: ~2100 nm
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ TROUBLESHOOTING
+
+"No wavelength information found"
+  → Your image needs wavelength metadata
+  → Check ENVI .hdr file or band descriptions
+
+Output is all black
+  → Adjust depth max (try 0.05, 0.1, 0.2)
+  → Check wavelength range matches your data
+
+Plugin doesn't appear
+  → Check folder is in correct plugins directory
+  → Restart QGIS
+  → Enable in Plugin Manager
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 DOCUMENTATION
+
+Detailed Guides:
+  • WAVELENGTH_TOOLS_GUIDE.md - Complete usage guide
+  • GETTING_STARTED.md - Installation and quick start
+  • README.md - Features and overview
+  • INSTALL.md - Installation troubleshooting
+
+In QGIS:
+  • Each algorithm has help text (? button in dialog)
+  • Right-click algorithm → Help for detailed info
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📧 SUPPORT
+
+Plugin Author: Grant Boxer
+Email: boxerg@iinet.net.au
+
+Original HyPy: Wim Bakker
+Email: bakker@itc.nl
+Institution: University of Twente
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 NEXT STEPS
+
+1. Install the plugin
+2. Test with your data
+3. Try the mineral mapping workflow
+4. Explore different wavelength ranges
+5. Consider sharing on GitHub!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+              🛰️ Happy Hyperspectral Analysis! 🌍📊
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
