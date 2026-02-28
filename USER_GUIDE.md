@@ -11,9 +11,9 @@
 3. [Step 2: Generate WoM Rasters](#3-step-2-generate-wom-rasters)
 4. [Step 2b: Wavelength of Minimum (Custom Range)](#4-step-2b-wavelength-of-minimum-custom-range)
 5. [Step 2c: Wavelength Mapping](#5-step-2c-wavelength-mapping)
-6. [Decision Tree Classification](#6-decision-tree-classification)
-7. [Spectral Processing Tools](#7-spectral-processing-tools)
-8. [SAM Classification](#8-sam-classification)
+6. [3 - Decision Tree Classification](#6-decision-tree-classification-group-3)
+7. [5 - Spectral Processing Tools](#7-spectral-processing-tools-group-5)
+8. [4 - SAM Classification](#8-sam-classification-group-4)
 9. [Common Wavelength Ranges](#9-common-wavelength-ranges)
 10. [Version History](#10-version-history)
 11. [References](#11-references)
@@ -24,36 +24,36 @@
 
 The Hyppy for QGIS plugin provides hyperspectral analysis tools accessed via the QGIS Processing Toolbox. The toolbox is organised as follows:
 
-- **Step 1 - Workflow Guide** — open this guide in your browser
-- **Step 2 - Generate WoM Rasters** — generate WoM rasters and wavelength maps
-- **Decision Tree Classification** — classify minerals and physical properties
-- **SAM Classification** — Spectral Angle Mapper classification
-- **Spectral Processing Tools** — band ratios, depths, convex hull removal, band math
+- **1 - Workflow Guide** — open this guide in your browser
+- **2 - Generate WoM Rasters** — generate WoM rasters and wavelength maps
+- **3 - Decision Tree Classification** — classify minerals and physical properties
+- **4 - SAM Classification** — Spectral Angle Mapper classification
+- **5 - Spectral Processing Tools** — band ratios, depths, convex hull removal, band math
 
 ### Plugin Structure
 
 | Algorithm | Toolbox Group | Purpose |
 |-----------|--------------|---------|
-| **Step 1 - Open Workflow Guide** | Step 1 - Workflow Guide | Open this guide in your browser |
-| **Step 2a - Generate All Three WoM Rasters** | Step 2 - Generate WoM Rasters | Generate WoM-A, WoM-B and WoM-C in one step |
-| **Step 2a - Generate WoM-A (750-1300 nm)** | Step 2 - Generate WoM Rasters | Generate WoM-A individually |
-| **Step 2a - Generate WoM-B (1850-2100 nm)** | Step 2 - Generate WoM Rasters | Generate WoM-B individually |
-| **Step 2a - Generate WoM-C (2100-2400 nm)** | Step 2 - Generate WoM Rasters | Generate WoM-C individually |
-| **Step 2b - Wavelength of Minimum (custom range)** | Step 2 - Generate WoM Rasters | Extract absorption feature wavelengths and depths for any range |
-| **Step 2c - Wavelength Mapping** | Step 2 - Generate WoM Rasters | Create RGB visualisation from absorption features |
-| **DT Mineral 2100-2400** | Decision Tree Classification | Classify minerals in 2100–2400 nm range |
-| **DT Albedo** | Decision Tree Classification | Classify brightness using per-pixel mean reflectance |
-| **DT Fedrop** | Decision Tree Classification | Classify iron drop intensity from R(1600)/R(1310) ratio |
-| **DT Illcryst** | Decision Tree Classification | Classify illite crystallinity and smectite minerals |
-| **DT Ill-Kaol** | Decision Tree Classification | Classify illite vs kaolinite ratio |
-| **DT Mineral Map** | Decision Tree Classification | Classify 17 mineral classes using WoM-B + WoM-C |
-| **Spectral Angle Mapper (SAM)** | SAM Classification | Classify pixels against a spectral library |
-| **Convex Hull Removal** | Spectral Processing Tools | Continuum removal using convex hull fitting |
-| **Band Ratio** | Spectral Processing Tools | Single-band ratio (Band1/Band2) by wavelength |
-| **Band Ratios (Sequential)** | Spectral Processing Tools | All-band sequential ratios with delta |
-| **Band Depths** | Spectral Processing Tools | Per-band absorption feature depths |
-| **Band Math** | Spectral Processing Tools | NumPy expression over image bands (i1, i2...) |
-| **Spectra Math** | Spectral Processing Tools | Per-pixel spectral expression (S1, S2...) |
+| **Step 1 - Open Workflow Guide** | 1 - Workflow Guide | Open this guide in your browser |
+| **Step 2a - Generate All Three WoM Rasters** | 2 - Generate WoM Rasters | Generate WoM-A, WoM-B and WoM-C in one step |
+| **Step 2a - Generate WoM-A (750-1300 nm)** | 2 - Generate WoM Rasters | Generate WoM-A individually |
+| **Step 2a - Generate WoM-B (1850-2100 nm)** | 2 - Generate WoM Rasters | Generate WoM-B individually |
+| **Step 2a - Generate WoM-C (2100-2400 nm)** | 2 - Generate WoM Rasters | Generate WoM-C individually |
+| **Step 2b - Wavelength of Minimum (custom range)** | 2 - Generate WoM Rasters | Extract absorption feature wavelengths and depths for any range |
+| **Step 2c - Wavelength Mapping** | 2 - Generate WoM Rasters | Create RGB visualisation from absorption features |
+| **DT Mineral 2100-2400** | 3 - Decision Tree Classification | Classify minerals in 2100–2400 nm range |
+| **DT Albedo** | 3 - Decision Tree Classification | Classify brightness using per-pixel mean reflectance |
+| **DT Fedrop** | 3 - Decision Tree Classification | Classify iron drop intensity from R(1600)/R(1310) ratio |
+| **DT Illcryst** | 3 - Decision Tree Classification | Classify illite crystallinity and smectite minerals |
+| **DT Ill-Kaol** | 3 - Decision Tree Classification | Classify illite vs kaolinite ratio |
+| **DT Mineral Map** | 3 - Decision Tree Classification | Classify 17 mineral classes using WoM-B + WoM-C |
+| **Spectral Angle Mapper (SAM)** | 4 - SAM Classification | Classify pixels against a spectral library |
+| **Convex Hull Removal** | 5 - Spectral Processing Tools | Continuum removal using convex hull fitting |
+| **Band Ratio** | 5 - Spectral Processing Tools | Single-band ratio (Band1/Band2) by wavelength |
+| **Band Ratios (Sequential)** | 5 - Spectral Processing Tools | All-band sequential ratios with delta |
+| **Band Depths** | 5 - Spectral Processing Tools | Per-band absorption feature depths |
+| **Band Math** | 5 - Spectral Processing Tools | NumPy expression over image bands (i1, i2...) |
+| **Spectra Math** | 5 - Spectral Processing Tools | Per-pixel spectral expression (S1, S2...) |
 
 ---
 
@@ -147,7 +147,7 @@ Takes a Wavelength of Minimum output and creates an RGB image. Colour (hue) repr
 
 ---
 
-## 6. Decision Tree Classification
+## 6. Decision Tree Classification (Group 3)
 
 The decision tree classifiers use pre-computed wavelength analysis outputs to assign mineral or physical property classes to each pixel. All classifiers require a minimum set of input data prepared in Step 2.
 
@@ -191,7 +191,7 @@ Each classifier produces a palette-indexed integer class raster (GeoTIFF) as the
 
 ---
 
-## 7. Spectral Processing Tools
+## 7. Spectral Processing Tools (Group 5)
 
 The six spectral processing tools can be applied independently to any hyperspectral raster. All tools read wavelength metadata from the ENVI domain first, with fallback to the default metadata domain and numeric band descriptions.
 
@@ -258,7 +258,7 @@ Applies a per-pixel spectral expression using one or more input images. Each pix
 
 ---
 
-## 8. SAM Classification
+## 8. SAM Classification (Group 4)
 
 The Spectral Angle Mapper classifies image pixels by measuring the spectral angle between each pixel and a set of reference spectra. SAM is insensitive to illumination variations, making it robust for mineral identification.
 
@@ -269,7 +269,7 @@ The Spectral Angle Mapper classifies image pixels by measuring the spectral angl
 
 ### 8.2 Browse the Spectral Library (Optional)
 
-1. Open SAM from Processing Toolbox > Hyppy > SAM Classification > Spectral Angle Mapper
+1. Open SAM from Processing Toolbox > Hyppy > 4 - SAM Classification > Spectral Angle Mapper
 2. Select your spectral library file
 3. Check "List available spectra names (does not run SAM)"
 4. Click Run — all spectra will be listed with index numbers in the log.
@@ -326,7 +326,7 @@ The SAM algorithm automatically handles:
 
 | Ver. | Title | Key Changes |
 |------|-------|-------------|
-| **2.4** | **Toolbox restructure and bug fixes** | Toolbox reorganised: Step 1 (Workflow Guide), Step 2 (Generate WoM Rasters with Step 2a/2b/2c), Decision Tree Classification, SAM Classification, Spectral Processing Tools. Fixed other-9 mineral class unreachable in dt_2100_2400. Updated citation to van Ruitenbeek et al. (2025). Updated homepage URL to https://github.com/grantboxer/hyppy_plugin. Getting Started now opens USER_GUIDE.md in browser. |
+| **2.4** | **Toolbox restructure and bug fixes** | Toolbox reorganised: Step 1 (Workflow Guide), Step 2 (Generate WoM Rasters with Step 2a/2b/2c), 3 - Decision Tree Classification, 4 - SAM Classification, 5 - Spectral Processing Tools. Fixed other-9 mineral class unreachable in dt_2100_2400. Updated citation to van Ruitenbeek et al. (2025). Updated homepage URL to https://github.com/grantboxer/hyppy_plugin. Getting Started now opens USER_GUIDE.md in browser. |
 | **2.3** | **Resizable legend window** | Legend dock window is now fully resizable by dragging its edges. Image scales to fill the dock. Minimum size 100×150 px. |
 | **2.2** | **Fix legend not displaying** | Legend dock creation moved to postProcessAlgorithm(), fixing the legend not appearing after processing completed. |
 | **2.0** | **Legend floating dock window** | Legend displayed automatically in a floating QDockWidget after processing. |
@@ -336,7 +336,7 @@ The SAM algorithm automatically handles:
 | **1.4** | **Workflow A and plugin rename** | New Workflow A with four algorithms to generate WoM rasters directly from the cube. New dt_mineral_map classifier (17 mineral classes). |
 | **1.3** | **Decision Tree Classifiers** | Restructured toolbox into five workflows A–E. Added dt_2100_2400, dt_albedo, dt_fedrop, dt_illcryst, dt_ill_kaol classifiers. |
 | **1.2** | **Wavelength Bug Fix** | Fixed all six new tools not reading wavelengths from ENVI-format rasters. |
-| **1.1** | **Six New Spectral Processing Tools** | Added Convex Hull Removal, Band Ratio, Band Ratios, Band Depths, Band Math, Spectra Math. |
+| **1.1** | **Six New 5 - Spectral Processing Tools** | Added Convex Hull Removal, Band Ratio, Band Ratios, Band Depths, Band Math, Spectra Math. |
 | **0.9** | **Spectra Selection Filter** | Spectra filter with wildcard, index, and range support. Library browser to list available spectra. |
 | **0.8** | **Robust ENVI Reader** | Direct .hdr parsing and binary reading. Tested against USGS Spectral Library V7 (402 spectra). |
 | **0.5** | **Unit Auto-Detection** | Auto-converts µm ↔ nm wavelength units. |
