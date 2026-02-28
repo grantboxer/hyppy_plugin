@@ -1,6 +1,6 @@
 # Hyppy for QGIS — Complete Workflow Guide
 
-**Hyperspectral Analysis Tools | Version 2.4 | February 2026**
+**Hyperspectral Analysis Tools | Version 2.8 | February 2026**
 
 ---
 
@@ -11,12 +11,13 @@
 3. [Step 2: Generate WoM Rasters](#3-step-2-generate-wom-rasters)
 4. [Step 2b: Wavelength of Minimum (Custom Range)](#4-step-2b-wavelength-of-minimum-custom-range)
 5. [Step 2c: Wavelength Mapping](#5-step-2c-wavelength-mapping)
-6. [3 - Decision Tree Classification](#6-decision-tree-classification-group-3)
-7. [5 - Spectral Processing Tools](#7-spectral-processing-tools-group-5)
-8. [4 - SAM Classification](#8-sam-classification-group-4)
-9. [Common Wavelength Ranges](#9-common-wavelength-ranges)
-10. [Version History](#10-version-history)
-11. [References](#11-references)
+6. [6 - Feature Extraction](#6-feature-extraction-group-6)
+7. [3 - Decision Tree Classification](#7-decision-tree-classification-group-3)
+8. [5 - Spectral Processing Tools](#8-spectral-processing-tools-group-5)
+9. [4 - SAM Classification](#9-sam-classification-group-4)
+10. [Common Wavelength Ranges](#10-common-wavelength-ranges)
+11. [Version History](#11-version-history)
+12. [References](#12-references)
 
 ---
 
@@ -29,11 +30,12 @@ The Hyppy for QGIS plugin provides hyperspectral analysis tools accessed via the
 - **3 - Decision Tree Classification** — classify minerals and physical properties
 - **4 - SAM Classification** — Spectral Angle Mapper classification
 - **5 - Spectral Processing Tools** — band ratios, depths, convex hull removal, band math
+- **6 - Feature Extraction** — one-click WoM + wavelength map + legend for standard absorption features
 
 ### Plugin Structure
 
 | Algorithm | Toolbox Group | Purpose |
-|-----------|--------------|---------|
+|-----------|--------------|---------| 
 | **Step 1 - Open Workflow Guide** | 1 - Workflow Guide | Open this guide in your browser |
 | **Step 2a - Generate All Three WoM Rasters** | 2 - Generate WoM Rasters | Generate WoM-A, WoM-B and WoM-C in one step |
 | **Step 2a - Generate WoM-A (750-1300 nm)** | 2 - Generate WoM Rasters | Generate WoM-A individually |
@@ -41,6 +43,17 @@ The Hyppy for QGIS plugin provides hyperspectral analysis tools accessed via the
 | **Step 2a - Generate WoM-C (2100-2400 nm)** | 2 - Generate WoM Rasters | Generate WoM-C individually |
 | **Step 2b - Wavelength of Minimum (custom range)** | 2 - Generate WoM Rasters | Extract absorption feature wavelengths and depths for any range |
 | **Step 2c - Wavelength Mapping** | 2 - Generate WoM Rasters | Create RGB visualisation from absorption features |
+| **FE1 - 1480W** | 6 - Feature Extraction | WoM 1440-1520 nm, map 1471-1491 nm |
+| **FE2 - 1550W** | 6 - Feature Extraction | WoM 1510-1610 nm, map 1520-1563 nm |
+| **FE3 - 1760W** | 6 - Feature Extraction | WoM 1730-1790 nm, map 1751-1764 nm |
+| **FE4 - 2080D** | 6 - Feature Extraction | WoM 2060-2100 nm, map 2075-2085 nm |
+| **FE5 - 2160D** | 6 - Feature Extraction | WoM 2138-2179 nm, map 2159-2166 nm |
+| **FE6 - 2200W** | 6 - Feature Extraction | WoM 2120-2245 nm, map 2185-2215 nm |
+| **FE7 - 2250W** | 6 - Feature Extraction | WoM 2230-2280 nm, map 2248-2268 nm |
+| **FE8 - 2290W** | 6 - Feature Extraction | WoM 2270-2320 nm, map 2279-2338 nm |
+| **FE9 - 2320W** | 6 - Feature Extraction | WoM 2295-2345 nm, map 2300-2340 nm |
+| **FE10 - 2350W** | 6 - Feature Extraction | WoM 2310-2370 nm, map 2320-2366 nm |
+| **FE11 - 2390W** | 6 - Feature Extraction | WoM 2375-2435 nm, map 2377-2406 nm |
 | **DT Mineral 2100-2400** | 3 - Decision Tree Classification | Classify minerals in 2100–2400 nm range |
 | **DT Albedo** | 3 - Decision Tree Classification | Classify brightness using per-pixel mean reflectance |
 | **DT Fedrop** | 3 - Decision Tree Classification | Classify iron drop intensity from R(1600)/R(1310) ratio |
@@ -143,15 +156,63 @@ Takes a Wavelength of Minimum output and creates an RGB image. Colour (hue) repr
 
 **Output Wavelength Map (RGB):** A 3-band RGB GeoTIFF. Hue encodes wavelength position (blue→green→yellow→red across the wavelength range) and brightness encodes absorption depth.
 
-**Output Wavelength Map Legend (PNG):** A 2D colour legend image. The Y axis shows wavelength (nm) and the X axis shows absorption depth (%). The legend uses the same colour scheme as the wavelength map, allowing direct interpretation of map colours. After processing completes, the legend is automatically displayed in a floating dock window inside QGIS so that the map and legend can be viewed simultaneously. The dock window is resizable by dragging its edges.
+**Output Wavelength Map Legend (PNG):** A 2D colour legend image. The Y axis shows wavelength (nm) and the X axis shows absorption depth. The legend uses the same colour scheme as the wavelength map, allowing direct interpretation of map colours. After processing completes, the legend is automatically displayed in a floating dock window inside QGIS so that the map and legend can be viewed simultaneously. The dock window is resizable by dragging its edges.
 
 ---
 
-## 6. Decision Tree Classification (Group 3)
+## 6. Feature Extraction (Group 6)
+
+The Feature Extraction tools are one-click pipelines that combine Wavelength of Minimum, Wavelength Mapping, and legend display into a single operation. Each tool targets a specific known absorption feature, with pre-configured wavelength ranges and map stretch values. Running a Feature Extraction tool produces three outputs: a WoM raster, an RGB wavelength map, and a colour legend PNG — and automatically displays the legend in a floating dock window.
+
+Each tool is named after its characteristic absorption wavelength and feature type:
+- **W** suffix — water or hydroxyl combination band
+- **D** suffix — diagnostic mineral absorption feature
+
+### 6.1 Feature Extraction Tools
+
+| Tool | WoM Search Range | Map Colour Stretch | Characteristic Feature |
+|------|-----------------|-------------------|----------------------|
+| **FE1 - 1480W** | 1440 – 1520 nm | 1471 – 1491 nm | Water / hydroxyl combination band ~1480 nm |
+| **FE2 - 1550W** | 1510 – 1610 nm | 1520 – 1563 nm | Hydroxyl overtone / organic ~1550 nm |
+| **FE3 - 1760W** | 1730 – 1790 nm | 1751 – 1764 nm | Carbonate / organic combination ~1760 nm |
+| **FE4 - 2080D** | 2060 – 2100 nm | 2075 – 2085 nm | Carbonate / AlOH diagnostic ~2080 nm |
+| **FE5 - 2160D** | 2138 – 2179 nm | 2159 – 2166 nm | Kaolinite / dickite diagnostic ~2160 nm |
+| **FE6 - 2200W** | 2120 – 2245 nm | 2185 – 2215 nm | AlOH absorption — illite / smectite / kaolinite region |
+| **FE7 - 2250W** | 2230 – 2280 nm | 2248 – 2268 nm | AlOH / MgOH transition ~2250 nm |
+| **FE8 - 2290W** | 2270 – 2320 nm | 2279 – 2338 nm | MgOH / carbonate ~2290 nm |
+| **FE9 - 2320W** | 2295 – 2345 nm | 2300 – 2340 nm | Carbonate / dolomite ~2320 nm |
+| **FE10 - 2350W** | 2310 – 2370 nm | 2320 – 2366 nm | Carbonate / chlorite ~2350 nm |
+| **FE11 - 2390W** | 2375 – 2435 nm | 2377 – 2406 nm | MgOH / chlorite / serpentine ~2390 nm |
+
+### 6.2 Inputs
+
+| Parameter | Description |
+|-----------|-------------|
+| **Hyperspectral cube** | The original reflectance image with wavelength metadata |
+| **Number of features (1–9)** | How many absorption minima to extract per pixel (default 1) |
+| **Output WoM raster** | Path for the Wavelength of Minimum output |
+| **Output Wavelength Map RGB** | Path for the colour-coded map |
+| **Output Colour Legend (PNG)** | Optional — defaults to `<label>_legend.png` beside the WoM output |
+
+### 6.3 Outputs
+
+**WoM raster:** Multi-band GeoTIFF — Band 1 = wavelength of minimum (nm), Band 2 = feature depth. Additional band pairs follow for each requested feature, sorted deepest first.
+
+**Wavelength Map RGB:** 3-band GeoTIFF where hue encodes wavelength position across the map stretch range and brightness encodes absorption depth. Ready for display in QGIS.
+
+**Colour Legend PNG:** A 2D legend image with wavelength (nm) on the Y axis and depth on the X axis. The legend is saved as `<label>_legend.png` (e.g. `1480W_legend.png`) in the same folder as the WoM raster, unless an explicit path is specified. After processing the legend is automatically displayed in a floating dock widget within QGIS.
+
+### 6.4 Workflow Tip
+
+Feature Extraction tools are designed for rapid reconnaissance of a dataset. Run several tools across your scene to identify which absorption features are present and spatially coherent before committing to a full decision tree classification workflow.
+
+---
+
+## 7. Decision Tree Classification (Group 3)
 
 The decision tree classifiers use pre-computed wavelength analysis outputs to assign mineral or physical property classes to each pixel. All classifiers require a minimum set of input data prepared in Step 2.
 
-### 6.1 Required Input Data
+### 7.1 Required Input Data
 
 **1. Hyperspectral spectral cube**
 Required by dt_albedo and dt_fedrop to compute internal band ratios.
@@ -159,12 +220,12 @@ Required by dt_albedo and dt_fedrop to compute internal band ratios.
 **2. WoM rasters from Step 2a:**
 
 | WoM | Wavelength Range | Used by |
-|-----|-----------------|---------|
+|-----|-----------------|---------| 
 | **WoM-A** | 750 – 1300 nm | Future classifiers |
 | **WoM-B** | 1850 – 2100 nm | dt_mineral_map, dt_illcryst, dt_ill_kaol (depth denominator) |
 | **WoM-C** | 2100 – 2400 nm | dt_mineral_map, dt_2100_2400, dt_fedrop, dt_illcryst, dt_ill_kaol |
 
-### 6.2 Decision Tree Algorithms
+### 7.2 Decision Tree Algorithms
 
 **DT Mineral 2100-2400 — Mineral Classification (2100–2400 nm)**
 Classifies 16 mineral classes including kaolinite, muscovite, illite, pyrophyllite, alunite, and carbonate minerals. Input: WoM-C only. The algorithm uses the primary absorption wavelength (Band 1) and feature depth (Band 2) from the 2100–2400 nm wavelength map.
@@ -185,17 +246,17 @@ Classifies the illite-to-kaolinite ratio into nine classes (aspectral, NO-ALOH, 
 **DT Mineral Map — Mineral Map Classification**
 Classifies pixels into 17 mineral classes covering illite/muscovite variants, kaolinite, phengite, Fe-chlorite, and chlorite. Branches on W1 (wavelength of deepest feature), W2 (wavelength of second deepest feature), and Ix (illite crystallinity). Inputs: WoM-B + WoM-C (WoM-C must have ≥2 features).
 
-### 6.3 Outputs
+### 7.3 Outputs
 
 Each classifier produces a palette-indexed integer class raster (GeoTIFF) as the primary output. Class names are embedded in the raster as a Raster Attribute Table (RAT), which QGIS reads to display class names in the layer legend. An optional RGB colour raster can also be requested for visual display.
 
 ---
 
-## 7. Spectral Processing Tools (Group 5)
+## 8. Spectral Processing Tools (Group 5)
 
 The six spectral processing tools can be applied independently to any hyperspectral raster. All tools read wavelength metadata from the ENVI domain first, with fallback to the default metadata domain and numeric band descriptions.
 
-### 7.1 Convex Hull Removal (Continuum Removal)
+### 8.1 Convex Hull Removal (Continuum Removal)
 
 Removes the spectral continuum from each pixel spectrum using a convex hull fit, isolating individual absorption features for analysis.
 
@@ -206,19 +267,19 @@ Removes the spectral continuum from each pixel spectrum using a convex hull fit,
 | **Cutoff Wavelength (nm)** | Restrict to bands below this wavelength. Set to 0 to use all bands. |
 | **Use Bad Band List** | Exclude bands flagged in ENVI BBL metadata |
 
-### 7.2 Band Ratio
+### 8.2 Band Ratio
 
 Computes a single-band ratio image: Numerator band / Denominator band. Bands are specified by wavelength in nm; the nearest available band is selected automatically.
 
-### 7.3 Band Ratios (Sequential)
+### 8.3 Band Ratios (Sequential)
 
 Computes sequential band ratios across the full spectrum: `output[i] = input[i] / input[i + delta]`. Useful for highlighting spectral gradients and transitions.
 
-### 7.4 Band Depths
+### 8.4 Band Depths
 
 Computes per-band absorption feature depths. For each centre band i: `top = (band[i-delta] + band[i+delta]) / 2`, `depth = (top - band[i]) / top`. Positive values indicate absorption.
 
-### 7.5 Band Math
+### 8.5 Band Math
 
 Evaluates an arbitrary Python/NumPy expression over one or more input rasters to produce a single-band output. Input images are referenced as `i1`, `i2`, ... (up to 20).
 
@@ -238,7 +299,7 @@ Evaluates an arbitrary Python/NumPy expression over one or more input rasters to
 | `i1.get_band(0) - i2.get_band(0)` | Band 1 difference between two images |
 | `log(i1.get_band(4))` | Natural log of band 5 |
 
-### 7.6 Spectra Math
+### 8.6 Spectra Math
 
 Applies a per-pixel spectral expression using one or more input images. Each pixel spectrum is wrapped in a Spectrum object (S1, S2, ... up to 20).
 
@@ -258,23 +319,23 @@ Applies a per-pixel spectral expression using one or more input images. Each pix
 
 ---
 
-## 8. SAM Classification (Group 4)
+## 9. SAM Classification (Group 4)
 
 The Spectral Angle Mapper classifies image pixels by measuring the spectral angle between each pixel and a set of reference spectra. SAM is insensitive to illumination variations, making it robust for mineral identification.
 
-### 8.1 Prepare Input Data
+### 9.1 Prepare Input Data
 
 - **Hyperspectral image** with wavelength metadata in ENVI header format.
 - **Spectral library** in ENVI binary format (.sli + .hdr) or CSV text format (.csv, .txt).
 
-### 8.2 Browse the Spectral Library (Optional)
+### 9.2 Browse the Spectral Library (Optional)
 
 1. Open SAM from Processing Toolbox > Hyppy > 4 - SAM Classification > Spectral Angle Mapper
 2. Select your spectral library file
 3. Check "List available spectra names (does not run SAM)"
 4. Click Run — all spectra will be listed with index numbers in the log.
 
-### 8.3 Configure the Spectra Filter
+### 9.3 Configure the Spectra Filter
 
 | Filter Pattern | Effect |
 |---------------|--------|
@@ -285,7 +346,7 @@ The Spectral Angle Mapper classifies image pixels by measuring the spectral angl
 | `1,5,42` | Specific spectra by index |
 | *(empty)* | Use all spectra in the library |
 
-### 8.4 Select Similarity Measure
+### 9.4 Select Similarity Measure
 
 | Code | Measure | Notes |
 |------|---------|-------|
@@ -295,12 +356,12 @@ The Spectral Angle Mapper classifies image pixels by measuring the spectral angl
 | **ED** | Euclidean Distance | Sensitive to shape and magnitude. |
 | **ID** | Intensity Difference | Sum of absolute differences. |
 
-### 8.5 Outputs
+### 9.5 Outputs
 
 - **Rule Image:** Multi-band raster with similarity values for each reference spectrum. Lower values indicate better matches.
 - **Classification Image:** Single-band raster with class assignments (0 = unclassified, 1+ = class index).
 
-### 8.6 Automatic Processing
+### 9.6 Automatic Processing
 
 The SAM algorithm automatically handles:
 - **Wavelength resampling:** Reference spectra are interpolated to match image wavelengths when band counts differ.
@@ -309,7 +370,7 @@ The SAM algorithm automatically handles:
 
 ---
 
-## 9. Common Wavelength Ranges
+## 10. Common Wavelength Ranges
 
 | Application | Start (nm) | End (nm) | Target Features |
 |-------------|-----------|---------|----------------|
@@ -322,10 +383,11 @@ The SAM algorithm automatically handles:
 
 ---
 
-## 10. Version History
+## 11. Version History
 
 | Ver. | Title | Key Changes |
 |------|-------|-------------|
+| **2.8** | **Feature Extraction group** | Added 6 - Feature Extraction group with 11 one-click tools (FE1–FE11) covering key absorption features from 1440 to 2435 nm. Each tool runs WoM, generates a wavelength map with preset colour stretch, saves a named legend PNG (e.g. `1480W_legend.png`), and displays the legend in a floating dock. Annotated legend axes with bitmap font labels — no matplotlib dependency. Vectorised all colour mapping and legend rendering loops for speed. |
 | **2.4** | **Toolbox restructure and bug fixes** | Toolbox reorganised: Step 1 (Workflow Guide), Step 2 (Generate WoM Rasters with Step 2a/2b/2c), 3 - Decision Tree Classification, 4 - SAM Classification, 5 - Spectral Processing Tools. Fixed other-9 mineral class unreachable in dt_2100_2400. Updated citation to van Ruitenbeek et al. (2025). Updated homepage URL to https://github.com/grantboxer/hyppy_plugin. Getting Started now opens USER_GUIDE.md in browser. |
 | **2.3** | **Resizable legend window** | Legend dock window is now fully resizable by dragging its edges. Image scales to fill the dock. Minimum size 100×150 px. |
 | **2.2** | **Fix legend not displaying** | Legend dock creation moved to postProcessAlgorithm(), fixing the legend not appearing after processing completed. |
@@ -345,7 +407,7 @@ The SAM algorithm automatically handles:
 
 ---
 
-## 11. References
+## 12. References
 
 Kruse, F.A. et al., 1993. The Spectral Image Processing System (SIPS) — Interactive Visualization and Analysis of Imaging Spectrometer Data. *Remote Sensing of Environment*, 44(2-3), pp.145–163.
 
