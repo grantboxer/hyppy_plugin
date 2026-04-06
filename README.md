@@ -1,3 +1,3 @@
-aThis plug-in hs been derived from the ITC HypPy software for processing hyperspectral data. Translation from python to a QGIS plug-in was done using Claude AI.
+This plug-in hs been derived from the ITC HypPy software for processing hyperspectral data written by Win Bakker. Translation from python to a QGIS plug-in as well as adding additional features was done using Claude AI.
 
 Hyperspectral data needs to be in an ENVI comptible format so that the sprectral information is read with the band data. EnMap and PRISMA data can be imported using the EnMap-Box plug-in and then converted to a BIP/BIL format file. The BIL format is preferred. Various feature extraction and spectral processing tools have been added. The minimum wavelegth algorithm from the Hyperspectral Python (HypPy) program has been used extensively with additional information from a variety of references - see workflow document.
